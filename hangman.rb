@@ -44,6 +44,15 @@ def check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
   end
 end
 
+def display_incorrect_guesses(incorrect_guesses)
+  display_str = ''
+  incorrect_guesses.each do |chr|
+    display_str += chr.upcase
+    display_str += ", "
+  end
+  puts display_str
+end
+
 end
 
 #--------------------------------#
@@ -65,14 +74,11 @@ number_of_incorrect_guesses = incorrect_guesses.size
 word_arr = word.split('')
 
 loop do
-  # display_hangman(number_of_incorrect_guesses)
-  # display_incorrect_guesses(incorrect_guesses)
-  # display_correct_guesses(correct_guesses)
   guess = get_player_guess
   check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
-  p incorrect_guesses
-  p correct_guesses
-  p word_arr
+  display_incorrect_guesses(incorrect_guesses)
+  # display_hangman(number_of_incorrect_guesses)
+  # display_correct_guesses(correct_guesses)
 end
 end
 
