@@ -20,7 +20,7 @@ module GameFunctions
 
   def get_player_guess
     loop do
-    guess = gets.chomp
+    guess = gets.chomp!
     if guess.size != 1
       puts "Please keep your guess down to one character"
       next
@@ -28,9 +28,8 @@ module GameFunctions
       puts "Only English alphabetic characters are allowed"
       next
     end
-    break
+    return gets.downcase
   end
-gets.downcase
 end
 
 
@@ -53,13 +52,24 @@ def round
 incorrect_guesses = []
 correct_guesses = {}
 number_of_incorrect_guesses = 0
+word_arr = word.split
 
 loop do
   # display_hangman(number_of_incorrect_guesses)
   # display_incorrect_guesses(incorrect_guesses)
   # display_correct_guesses(correct_gusses)
   guess = get_player_guess
-
+  if word_arr.include?(guess)
+    word_arr.each_with_index do |letter, index|
+      if letter == guess
+        correct_guesses[letter] = index
+      end
+    end
+  else
+    incorrect_guesses << guess
+  end
+  p incorrect_guesses
+  p correct_guesses
 end
 end
 
