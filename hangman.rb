@@ -19,20 +19,30 @@ module GameFunctions
   end
 
   def get_player_guess
+    # If player guess is not a single character alphabet we keep displaying error message.
     loop do
-    guess = gets.chomp!
-    if guess.size != 1
-      puts "Please keep your guess down to one character"
-      next
-    elsif !guess.match(/[a-z]/i)
-      puts "Only English alphabetic characters are allowed"
-      next
-    end
-    return gets.downcase
+    guess = gets.chomp.downcase
+      unless guess.size == 1 && guess.match(/[a-z]/i)
+        puts "Please limit your guess to one character.",
+              "And only English alphabets are allowed."
+              next
+      end
+    return guess
   end
 end
 
-
+def check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
+  if word_arr.include?(guess)
+    word_arr.each_with_index do |letter, index|
+      if letter == guess
+        correct_guesses[index] = letter
+      end
+    end
+    # This check is not make sure that incorrect guesses don't get put twice into the array
+  elsif !incorrect_guesses.include?(guess)
+    incorrect_guesses << guess
+  end
+end
 
 end
 
@@ -51,25 +61,18 @@ end
 def round
 incorrect_guesses = []
 correct_guesses = {}
-number_of_incorrect_guesses = 0
-word_arr = word.split
+number_of_incorrect_guesses = incorrect_guesses.size
+word_arr = word.split('')
 
 loop do
   # display_hangman(number_of_incorrect_guesses)
   # display_incorrect_guesses(incorrect_guesses)
-  # display_correct_guesses(correct_gusses)
+  # display_correct_guesses(correct_guesses)
   guess = get_player_guess
-  if word_arr.include?(guess)
-    word_arr.each_with_index do |letter, index|
-      if letter == guess
-        correct_guesses[letter] = index
-      end
-    end
-  else
-    incorrect_guesses << guess
-  end
+  check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
   p incorrect_guesses
   p correct_guesses
+  p word_arr
 end
 end
 
