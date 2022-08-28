@@ -61,8 +61,14 @@ def add_empty_dashes(correct_guesses, word_arr)
 end
 
 
-# def display_correct_guesses(correct_guesses)
-# correct_guesses
+def display_correct_guesses(correct_guesses)
+  display_str = ''
+  correct_guesses.each do |chr|
+    display_str += chr
+    display_str += ' '
+  end
+  puts display_str
+end
 
 
 
@@ -91,9 +97,9 @@ loop do
   number_of_incorrect_guesses = incorrect_guesses.size
   check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
   display_incorrect_guesses(incorrect_guesses)
-  # display_correct_guesses(correct_guesses)
+  display_correct_guesses(correct_guesses)
   p word_arr
-  p correct_guesses
+  # p correct_guesses
   # display_hangman(number_of_incorrect_guesses)
 end
 end
