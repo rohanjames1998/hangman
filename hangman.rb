@@ -21,15 +21,16 @@ module GameFunctions
   def get_player_guess
     loop do
     guess = gets.chomp
-    if !guess.size == 1
+    if guess.size != 1
       puts "Please keep your guess down to one character"
       next
-    elsif !guess.match(/[a-zA-Z]/)
+    elsif !guess.match(/[a-z]/i)
       puts "Only English alphabetic characters are allowed"
       next
     end
-    gets.downcase
+    break
   end
+gets.downcase
 end
 
 
