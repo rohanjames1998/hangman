@@ -53,6 +53,19 @@ def display_incorrect_guesses(incorrect_guesses)
   puts display_str
 end
 
+def add_empty_dashes(correct_guesses, word_arr)
+  i = 0
+  word_arr.each do |chr|
+    correct_guesses << '_ '
+  end
+end
+
+
+# def display_correct_guesses(correct_guesses)
+# correct_guesses
+
+
+
 end
 
 #--------------------------------#
@@ -69,16 +82,19 @@ end
 
 def round
 incorrect_guesses = []
-correct_guesses = {}
-number_of_incorrect_guesses = incorrect_guesses.size
+correct_guesses = []
 word_arr = word.split('')
+add_empty_dashes(correct_guesses, word_arr)
 
 loop do
   guess = get_player_guess
+  number_of_incorrect_guesses = incorrect_guesses.size
   check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
   display_incorrect_guesses(incorrect_guesses)
-  # display_hangman(number_of_incorrect_guesses)
   # display_correct_guesses(correct_guesses)
+  p word_arr
+  p correct_guesses
+  # display_hangman(number_of_incorrect_guesses)
 end
 end
 
