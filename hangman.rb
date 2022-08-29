@@ -18,9 +18,12 @@ module GameFunctions
   end
 
   def get_player_guess
-    # If player guess is not a single character alphabet we keep displaying error message.
     loop do
       guess = gets.chomp.downcase
+      if guess == 'save'
+        return guess
+      end
+      # If player guess is not a single character alphabet we keep displaying error message.
       unless guess.size == 1 && guess.match(/[a-z]/i)
         puts "Please limit your guess to one character.",
              "And only English alphabets are allowed."
@@ -31,7 +34,9 @@ module GameFunctions
   end
 
   def check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
-    if word_arr.include?(guess)
+    if guess == 'save'
+      save_game(incorrect_guesses, correct_guesses, word_arr)
+    elsif word_arr.include?(guess)
       word_arr.each_with_index do |letter, index|
         if letter == guess
           correct_guesses[index] = letter
@@ -175,6 +180,17 @@ def end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
     return true
   end
 end
+
+def save_game(incorrect_guesses, correct_guesses, word_arr)
+  file_name = "Saved_game(#{Time.now.strftime("%d/%m %I:%M%P")})"
+  File.open(file_name, 'w') do |f|
+    f.write(incorrect_guesses.to_json)
+    f.write(correct_guesses.to_json)
+    f.write(word_arr.to_json)
+  end
+end
+
+
 end
 
 #--------------------------------#
@@ -200,7 +216,6 @@ class Game
       display_incorrect_guesses(incorrect_guesses)
       display_hangman(number_of_incorrect_guesses)
       display_correct_guesses(correct_guesses)
-      puts word_arr.join('')
       break if end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
     end
   end
