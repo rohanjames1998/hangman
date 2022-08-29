@@ -152,7 +152,7 @@ when number_of_incorrect_guesses == 6
 
 "
 when number_of_incorrect_guesses == 7
-  "
+ puts "
 
 
   |_______
@@ -196,6 +196,7 @@ loop do
   display_incorrect_guesses(incorrect_guesses)
   display_hangman(number_of_incorrect_guesses)
   display_correct_guesses(correct_guesses)
+  puts number_of_incorrect_guesses
   break if number_of_incorrect_guesses  == 7
   p word_arr
 end
