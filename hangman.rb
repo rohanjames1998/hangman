@@ -70,6 +70,103 @@ def display_correct_guesses(correct_guesses)
   puts display_str
 end
 
+def display_hangman(number_of_incorrect_guesses)
+
+case
+when number_of_incorrect_guesses == 1
+  puts  "
+
+
+  |_______
+  |      |
+  |
+  |
+  |
+  |
+  |
+
+"
+when number_of_incorrect_guesses == 2
+  puts "
+
+
+  |_______
+  |      |
+  |      O
+  |
+  |
+  |
+  |
+
+"
+when number_of_incorrect_guesses == 3
+  puts "
+
+
+  |_______
+  |      |
+  |      O
+  |      |
+  |      |
+  |
+  |
+
+"
+when number_of_incorrect_guesses == 4
+  puts "
+
+
+  |_______
+  |      |
+  |      O
+  |     /|
+  |      |
+  |
+  |
+
+"
+when number_of_incorrect_guesses == 5
+  puts "
+
+
+  |_______
+  |      |
+  |      O
+  |     /|\\
+  |      |
+  |
+  |
+
+"
+when number_of_incorrect_guesses == 6
+  puts "
+
+
+  |_______
+  |      |
+  |      O
+  |     /|\\
+  |      |
+  |     /
+  |
+
+"
+when number_of_incorrect_guesses == 7
+  "
+
+
+  |_______
+  |      |
+  |      O
+  |     /|\\
+  |      |
+  |     / \\
+  |
+
+"
+end
+end
+
 
 
 end
@@ -94,13 +191,13 @@ add_empty_dashes(correct_guesses, word_arr)
 
 loop do
   guess = get_player_guess
-  number_of_incorrect_guesses = incorrect_guesses.size
+  number_of_incorrect_guesses = incorrect_guesses.size + 1
+  break if number_of_incorrect_guesses  == 7
   check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
   display_incorrect_guesses(incorrect_guesses)
+  display_hangman(number_of_incorrect_guesses)
   display_correct_guesses(correct_guesses)
   p word_arr
-  # p correct_guesses
-  # display_hangman(number_of_incorrect_guesses)
 end
 end
 
@@ -117,6 +214,6 @@ end
 game = Game.new
 puts 'Hello and welcome to hangman!',
       'Try to guess the word in order to save the man from dying.',
-      'After 8 wrong guesses the man will be hanged.'
+      'After 7 wrong guesses the man will be hanged.'
       'Good Luck!!'
       game.round
