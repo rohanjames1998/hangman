@@ -45,7 +45,7 @@ def check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
 end
 
 def display_incorrect_guesses(incorrect_guesses)
-  display_str = ''
+  display_str = "\n Incorrect guesses: "
   incorrect_guesses.each do |chr|
     display_str += chr.upcase
     display_str += ", "
@@ -191,12 +191,12 @@ add_empty_dashes(correct_guesses, word_arr)
 
 loop do
   guess = get_player_guess
-  number_of_incorrect_guesses = incorrect_guesses.size + 1
-  break if number_of_incorrect_guesses  == 7
   check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
+  number_of_incorrect_guesses = incorrect_guesses.size
   display_incorrect_guesses(incorrect_guesses)
   display_hangman(number_of_incorrect_guesses)
   display_correct_guesses(correct_guesses)
+  break if number_of_incorrect_guesses  == 7
   p word_arr
 end
 end
