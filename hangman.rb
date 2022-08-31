@@ -1,4 +1,5 @@
 require 'pry-byebug'
+require 'json'
 
 #--------------------------------#
 # MODULES
@@ -181,14 +182,30 @@ def end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
   end
 end
 
+
 def save_game(incorrect_guesses, correct_guesses, word_arr)
-  file_name = "Saved_game(#{Time.now.strftime("%d/%m %I:%M%P")})"
-  File.open(file_name, 'w') do |f|
-    f.write(incorrect_guesses.to_json)
-    f.write(correct_guesses.to_json)
-    f.write(word_arr.to_json)
+  loop do
+  print "\n Enter the name of your save file:"
+  file_name = gets.chomp.downcase
+  file_name += '.json'
+  save_file = File.join('./saved_games', file_name)
+  if File.exists?(save_file)
+    puts "A save file with that name already exists.",
+         "Please rename your save file"
+         next
+  else
+    break
   end
 end
+
+    File.open(save_file, 'w') do |f|
+    f.write( incorrect_guesses.to_json)
+    f.write(correct_guesses.to_json)
+    f.write( word_arr.to_json)
+  end
+  puts "\n Your game has been successfully saved"
+end
+
 
 
 end
@@ -204,9 +221,9 @@ class Game
   end
 
   def round
-    incorrect_guesses = []
-    correct_guesses = []
-    word_arr = word.split('')
+    @incorrect_guesses = []
+    @correct_guesses = []
+    @word_arr = word.split('')
     add_empty_dashes(correct_guesses, word_arr)
 
     loop do
@@ -223,6 +240,8 @@ class Game
   private
 
   attr_reader :word
+
+  attr_accessor :correct_guesses, :incorrect_guesses, :word_arr
 end
 
 #--------------------------------#
