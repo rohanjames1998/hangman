@@ -20,6 +20,7 @@ module GameFunctions
 
   def get_player_guess
     loop do
+      puts "\n"
       guess = gets.chomp.downcase
       if guess == 'save'
         return guess
@@ -182,6 +183,14 @@ def end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
   end
 end
 
+def convert_to_json(incorrect_guesses, correct_guesses, word_arr)
+  hash = {
+    'incorrect_guesses' => incorrect_guesses,
+    'correct_guesses' => correct_guesses,
+    'word_arr' => word_arr,
+  }.to_json
+end
+
 
 def save_game(incorrect_guesses, correct_guesses, word_arr)
   loop do
@@ -195,23 +204,42 @@ def save_game(incorrect_guesses, correct_guesses, word_arr)
          next
   else
     File.open(save_file, 'w') do |f|
-    f.write(incorrect_guesses.to_json)
-    f.write(correct_guesses.to_json)
-    f.write(word_arr.to_json)
+      f.write(convert_to_json(incorrect_guesses, correct_guesses, word_arr))
     end
-    puts "\n Your game has been successfully saved"
+    puts "\nYour game has been successfully saved"
     break
   end
 end
 end
 
-def load_game
+def get_file_name
+  # This function checks if the file exists and returns the file if it does
+  loop do
+    player_input = gets.chomp.downcase + '.json'
+    file_name_with_path = File.join('./saved_games', player_input)
+    puts file_name_with_path
+    if File.exist?(file_name_with_path)
+      return file_name_with_path
+    else
+      puts "Please choose a valid save file name"
+      next
+    end
+  end
+end
+
+#This function returns a hash with previously saved values for instance variables
+def load_saved_hash
+  # This logic shows saved files
   path = "./saved_games"
   puts "\nPlease choose a save file:"
   Dir.each_child(path) do |f|
-    saved_file_name = f.split(".")[0]
+    saved_file_name = f.split(".")[0] #Showing file names without extension
     puts saved_file_name
   end
+# Making sure the file name exists
+  selected_file = File.read(get_file_name)
+  saved_hash =  JSON.parse(selected_file)
+  return saved_hash
 end
 
 end
@@ -223,18 +251,23 @@ class Game
   include GameFunctions
 
   def initialize
-    loop do
-    puts "Do you want to play a new game?[New]",
-         "Or load a saved game?[Load]:"
-         choice = gets.chomp.downcase.strip
-         if choice == "load"
-          load_game
-          break
-         elsif choice == "new"
-    @word = get_secret_word
     @incorrect_guesses = []
     @correct_guesses = []
-    @word_arr = word.split('')
+    @word_arr = []
+
+    loop do
+      puts "Do you want to play a new game?[New]",
+      "Or load a saved game?[Load]:"
+      choice = gets.chomp.downcase.strip
+      if choice == "load"
+        saved_hash = load_saved_hash
+        @incorrect_guesses = saved_hash['incorrect_guesses']
+        @correct_guesses = saved_hash['correct_guesses']
+        @word_arr = saved_hash['word_arr']
+        break
+      elsif choice == "new"
+        @word = get_secret_word
+        @word_arr = word.split('')
     add_empty_dashes(correct_guesses, word_arr)
     break
          else
@@ -246,15 +279,14 @@ class Game
   end
 
   def round
-      display_correct_guesses(correct_guesses)
     loop do
-      guess = get_player_guess
-      check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
       number_of_incorrect_guesses = incorrect_guesses.size
       display_incorrect_guesses(incorrect_guesses)
       display_hangman(number_of_incorrect_guesses)
       display_correct_guesses(correct_guesses)
-      break if end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
+    guess = get_player_guess
+    check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
+    break if end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
     end
   end
 
@@ -274,4 +306,4 @@ puts 'Hello and welcome to hangman!',
      'After 7 wrong guesses the man will be hanged.'
 'Good Luck!!'
 game = Game.new
-# game.round
+game.round
