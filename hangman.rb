@@ -194,16 +194,16 @@ def save_game(incorrect_guesses, correct_guesses, word_arr)
          "Please rename your save file"
          next
   else
+    File.open(save_file, 'w') do |f|
+    f.write(incorrect_guesses.to_json)
+    f.write(correct_guesses.to_json)
+    f.write(word_arr.to_json)
+    end
+    puts "\n Your game has been successfully saved"
     break
   end
 end
 
-    File.open(save_file, 'w') do |f|
-    f.write( incorrect_guesses.to_json)
-    f.write(correct_guesses.to_json)
-    f.write( word_arr.to_json)
-  end
-  puts "\n Your game has been successfully saved"
 end
 
 
@@ -218,12 +218,12 @@ class Game
 
   def initialize
     @word = get_secret_word
-  end
-
-  def round
     @incorrect_guesses = []
     @correct_guesses = []
     @word_arr = word.split('')
+  end
+
+  def round
     add_empty_dashes(correct_guesses, word_arr)
 
     loop do
@@ -242,6 +242,7 @@ class Game
   attr_reader :word
 
   attr_accessor :correct_guesses, :incorrect_guesses, :word_arr
+
 end
 
 #--------------------------------#
