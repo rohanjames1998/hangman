@@ -256,13 +256,15 @@ module DisplayFunctions
   end
 end
 
+# Making these functions available globally for hangman
+include GameFunctions
+include GetFunctions
+
 #--------------------------------#
 # CLASSES
 #--------------------------------#
 class Game
-  include GameFunctions
   include DisplayFunctions
-  include GetFunctions
 
   def initialize
     @incorrect_guesses = []
@@ -285,7 +287,7 @@ class Game
         add_empty_dashes(correct_guesses, word_arr)
         break
       else
-        puts "Please choose a valid option.",
+        puts "\nPlease choose a valid option.",
              "Type 'new' for new game and 'load' to load a saved game."
         next
       end
@@ -315,7 +317,6 @@ end
 #--------------------------------#
 # GAME
 #--------------------------------#
-include GameFunctions
 
 loop do
   puts 'Hello and welcome to hangman!',
