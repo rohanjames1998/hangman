@@ -203,10 +203,16 @@ def save_game(incorrect_guesses, correct_guesses, word_arr)
     break
   end
 end
-
 end
 
-
+def load_game
+  path = "./saved_games"
+  puts "\nPlease choose a save file:"
+  Dir.each_child(path) do |f|
+    saved_file_name = f.split(".")[0]
+    puts saved_file_name
+  end
+end
 
 end
 
@@ -217,15 +223,30 @@ class Game
   include GameFunctions
 
   def initialize
+    loop do
+    puts "Do you want to play a new game?[New]",
+         "Or load a saved game?[Load]:"
+         choice = gets.chomp.downcase.strip
+         if choice == "load"
+          load_game
+          break
+         elsif choice == "new"
     @word = get_secret_word
     @incorrect_guesses = []
     @correct_guesses = []
     @word_arr = word.split('')
+    add_empty_dashes(correct_guesses, word_arr)
+    break
+         else
+          puts "Please choose a valid option.",
+               "Type 'new' for new game and 'load' to load a saved game."
+               next
+         end
+        end
   end
 
   def round
-    add_empty_dashes(correct_guesses, word_arr)
-
+      display_correct_guesses(correct_guesses)
     loop do
       guess = get_player_guess
       check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
@@ -248,9 +269,9 @@ end
 #--------------------------------#
 # GAME
 #--------------------------------#
-game = Game.new
 puts 'Hello and welcome to hangman!',
      'Try to guess the word in order to save the man from dying.',
      'After 7 wrong guesses the man will be hanged.'
 'Good Luck!!'
-game.round
+game = Game.new
+# game.round
