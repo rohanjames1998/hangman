@@ -217,7 +217,6 @@ def get_file_name
   loop do
     player_input = gets.chomp.downcase + '.json'
     file_name_with_path = File.join('./saved_games', player_input)
-    puts file_name_with_path
     if File.exist?(file_name_with_path)
       return file_name_with_path
     else
@@ -280,13 +279,14 @@ class Game
 
   def round
     loop do
+      # binding.pry
       number_of_incorrect_guesses = incorrect_guesses.size
       display_incorrect_guesses(incorrect_guesses)
       display_hangman(number_of_incorrect_guesses)
       display_correct_guesses(correct_guesses)
-    guess = get_player_guess
-    check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
-    break if end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
+      break if end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
+      guess = get_player_guess
+      check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
     end
   end
 
