@@ -74,9 +74,15 @@ module GameFunctions
       puts saved_file_name
     end
     # Making sure the file name exists
-    selected_file = File.read(get_file_name)
+    user_input = get_file_name
+    #  Prevvious menu option so the player don't get stuck at saved files screen
+    if user_input == 'back'
+      return 'back'
+    else
+    selected_file = File.read(user_input)
     saved_hash =  JSON.parse(selected_file)
     return saved_hash
+    end
   end
 end
 
@@ -113,14 +119,18 @@ module GetFunctions
   end
 
   def get_file_name
-    # This function checks if the file exists and returns the file if it does
+    # This function checks if the file exists and returns the file if it does it returns it
+    print "\nOr enter 'back' to go back to the previous page:"
     loop do
-      player_input = gets.chomp.downcase + '.json'
+      player_input = gets.chomp.downcase
       file_name_with_path = File.join('./saved_games', player_input)
-      if File.exist?(file_name_with_path)
-        return file_name_with_path
+      if File.exist?("#{file_name_with_path}.json")
+        return "#{file_name_with_path}.json"
+      elsif player_input == 'back'
+        return 'back'
       else
-        puts "Please choose a valid save file name"
+        puts "Please choose a valid save file name.",
+              "Or if you wish to go back to the previous page enter 'back'"
         next
       end
     end
@@ -275,13 +285,18 @@ class Game
       puts "Do you want to play a new game?[New]",
            "Or load a saved game?[Load]:"
       choice = gets.chomp.downcase.strip
-      if choice == "load"
+      case
+      when choice == 'load'
         saved_hash = load_saved_hash
+        if saved_hash == 'back'
+          next
+        else
         @incorrect_guesses = saved_hash['incorrect_guesses']
         @correct_guesses = saved_hash['correct_guesses']
         @word_arr = saved_hash['word_arr']
         break
-      elsif choice == "new"
+        end
+      when choice == 'new'
         @word = get_secret_word
         @word_arr = word.split('')
         add_empty_dashes(correct_guesses, word_arr)
@@ -327,6 +342,6 @@ loop do
   game.round
 
   print "Wanna play another game? [Y/N]:"
-  choice = get_retry_choice
-  break if choice == 'n'
+  retry_choice = get_retry_choice
+  break if retry_choice == 'n'
 end
