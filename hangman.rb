@@ -1,41 +1,10 @@
-require 'pry-byebug'
 require 'json'
 
 #--------------------------------#
 # MODULES
 #--------------------------------#
 module GameFunctions
-  def get_secret_word
-    loop do
-      rng = rand(9800)
-      # Using strip to remove extra space if any
-      word = File.open('google-10000-english-no-swears.txt').readlines[rng].strip
-      if word.length.between?(5, 12)
-        return word
-      else
-        next
-      end
-    end
-  end
-
-  def get_player_guess
-    loop do
-      puts "\n"
-      guess = gets.chomp.downcase
-      if guess == 'save'
-        return guess
-      end
-      # If player guess is not a single character alphabet we keep displaying error message.
-      unless guess.size == 1 && guess.match(/[a-z]/i)
-        puts "Please limit your guess to one character.",
-             "And only English alphabets are allowed."
-        next
-      end
-      return guess
-    end
-  end
-
-  def check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
+    def check_player_guess(guess, incorrect_guesses, correct_guesses, word_arr)
     if guess == 'save'
       save_game(incorrect_guesses, correct_guesses, word_arr)
     elsif word_arr.include?(guess)
@@ -50,15 +19,7 @@ module GameFunctions
     end
   end
 
-  def display_incorrect_guesses(incorrect_guesses)
-    # Making incorrect_guesses elements presentable for displaying by adding space and commas between them
-    display_str = "\nIncorrect guesses: "
-    incorrect_guesses.each do |chr|
-      display_str += chr.upcase
-      display_str += ", "
-    end
-    puts display_str
-  end
+ 
 
   def add_empty_dashes(correct_guesses, word_arr)
     # Filling correct_guesses Array with empty dashes equal to number of characters in the word array
@@ -67,111 +28,7 @@ module GameFunctions
     end
   end
 
-  def display_correct_guesses(correct_guesses)
-    display_str = "\n"
-    # Making correct_guesses elements presentable for displaying by adding space between them
-    correct_guesses.each do |chr|
-      display_str += chr
-      display_str += ' '
-    end
-    puts display_str
-  end
-
-  def display_hangman(number_of_incorrect_guesses)
-    case
-    when number_of_incorrect_guesses == 1
-      puts "
-
-
-  |_______
-  |      |
-  |
-  |
-  |
-  |
-  |
-
-"
-    when number_of_incorrect_guesses == 2
-      puts "
-
-
-  |_______
-  |      |
-  |      O
-  |
-  |
-  |
-  |
-
-"
-    when number_of_incorrect_guesses == 3
-      puts "
-
-
-  |_______
-  |      |
-  |      O
-  |      |
-  |      |
-  |
-  |
-
-"
-    when number_of_incorrect_guesses == 4
-      puts "
-
-
-  |_______
-  |      |
-  |      O
-  |     /|
-  |      |
-  |
-  |
-
-"
-    when number_of_incorrect_guesses == 5
-      puts "
-
-
-  |_______
-  |      |
-  |      O
-  |     /|\\
-  |      |
-  |
-  |
-
-"
-    when number_of_incorrect_guesses == 6
-      puts "
-
-
-  |_______
-  |      |
-  |      O
-  |     /|\\
-  |      |
-  |     /
-  |
-
-"
-    when number_of_incorrect_guesses == 7
-      puts "
-
-
-  |_______
-  |      |
-  |      O
-  |     /|\\
-  |      |
-  |     / \\
-  |
-
-"
-    end
-  end
+ 
 
 def end_game?(number_of_incorrect_guesses, correct_guesses, word_arr)
   if number_of_incorrect_guesses == 7
@@ -212,19 +69,7 @@ def save_game(incorrect_guesses, correct_guesses, word_arr)
 end
 end
 
-def get_file_name
-  # This function checks if the file exists and returns the file if it does
-  loop do
-    player_input = gets.chomp.downcase + '.json'
-    file_name_with_path = File.join('./saved_games', player_input)
-    if File.exist?(file_name_with_path)
-      return file_name_with_path
-    else
-      puts "Please choose a valid save file name"
-      next
-    end
-  end
-end
+
 
 #This function returns a hash with previously saved values for instance variables
 def load_saved_hash
@@ -241,6 +86,56 @@ def load_saved_hash
   return saved_hash
 end
 
+
+
+end
+
+module GetFunctions
+
+def get_secret_word
+  loop do
+    rng = rand(9800)
+    # Using strip to remove extra space if any
+    word = File.open('google-10000-english-no-swears.txt').readlines[rng].strip
+    if word.length.between?(5, 12)
+      return word
+    else
+      next
+    end
+  end
+end
+
+def get_player_guess
+  loop do
+    puts "\n"
+    guess = gets.chomp.downcase
+    if guess == 'save'
+      return guess
+    end
+    # If player guess is not a single character alphabet we keep displaying error message.
+    unless guess.size == 1 && guess.match(/[a-z]/i)
+      puts "Please limit your guess to one character.",
+           "And only English alphabets are allowed."
+      next
+    end
+    return guess
+  end
+end
+
+def get_file_name
+  # This function checks if the file exists and returns the file if it does
+  loop do
+    player_input = gets.chomp.downcase + '.json'
+    file_name_with_path = File.join('./saved_games', player_input)
+    if File.exist?(file_name_with_path)
+      return file_name_with_path
+    else
+      puts "Please choose a valid save file name"
+      next
+    end
+  end
+end
+
 def get_retry_choice
   loop do
   choice = gets.chomp.downcase
@@ -254,6 +149,125 @@ end
 end
 
 end
+
+module DisplayFunctions
+
+  def display_incorrect_guesses(incorrect_guesses)
+    # Making incorrect_guesses elements presentable for displaying by adding space and commas between them
+    display_str = "\nIncorrect guesses: "
+    incorrect_guesses.each do |chr|
+      display_str += chr.upcase
+      display_str += ", "
+    end
+    puts display_str
+  end
+  
+  def display_correct_guesses(correct_guesses)
+    display_str = "\n"
+    # Making correct_guesses elements presentable for displaying by adding space between them
+    correct_guesses.each do |chr|
+      display_str += chr
+      display_str += ' '
+    end
+    puts display_str
+  end
+  
+  def display_hangman(number_of_incorrect_guesses)
+    case
+    when number_of_incorrect_guesses == 1
+      puts "
+  
+  
+  |_______
+  |      |
+  |
+  |
+  |
+  |
+  |
+  
+  "
+    when number_of_incorrect_guesses == 2
+      puts "
+  
+  
+  |_______
+  |      |
+  |      O
+  |
+  |
+  |
+  |
+  
+  "
+    when number_of_incorrect_guesses == 3
+      puts "
+  
+  
+  |_______
+  |      |
+  |      O
+  |      |
+  |      |
+  |
+  |
+  
+  "
+    when number_of_incorrect_guesses == 4
+      puts "
+  
+  
+  |_______
+  |      |
+  |      O
+  |     /|
+  |      |
+  |
+  |
+  
+  "
+    when number_of_incorrect_guesses == 5
+      puts "
+  
+  
+  |_______
+  |      |
+  |      O
+  |     /|\\
+  |      |
+  |
+  |
+  
+  "
+    when number_of_incorrect_guesses == 6
+      puts "
+  
+  
+  |_______
+  |      |
+  |      O
+  |     /|\\
+  |      |
+  |     /
+  |
+  
+  "
+    when number_of_incorrect_guesses == 7
+      puts "
+  
+  
+  |_______
+  |      |
+  |      O
+  |     /|\\
+  |      |
+  |     / \\
+  |
+
+  "
+    end
+  end
+
 
 #--------------------------------#
 # CLASSES
