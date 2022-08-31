@@ -241,6 +241,18 @@ def load_saved_hash
   return saved_hash
 end
 
+def get_retry_choice
+  loop do
+  choice = gets.chomp.downcase
+  if choice == 'y' || choice == 'n'
+    return choice
+  else
+    print "Please enter 'y' if you want to play again, Or 'n' if you don't want to play again:"
+  end
+
+end
+end
+
 end
 
 #--------------------------------#
@@ -279,7 +291,6 @@ class Game
 
   def round
     loop do
-      # binding.pry
       number_of_incorrect_guesses = incorrect_guesses.size
       display_incorrect_guesses(incorrect_guesses)
       display_hangman(number_of_incorrect_guesses)
@@ -301,9 +312,20 @@ end
 #--------------------------------#
 # GAME
 #--------------------------------#
+include GameFunctions
+
+loop do
 puts 'Hello and welcome to hangman!',
      'Try to guess the word in order to save the man from dying.',
      'After 7 wrong guesses the man will be hanged.'
 'Good Luck!!'
 game = Game.new
 game.round
+
+print "Wanna play another game? [Y/N]:"
+choice = get_retry_choice
+break if choice == 'n'
+end
+
+
+
