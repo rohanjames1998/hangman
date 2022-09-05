@@ -172,7 +172,7 @@ module DisplayFunctions
   def display_hangman(number_of_incorrect_guesses)
     case
     when number_of_incorrect_guesses == 1
-      puts "
+      puts '
 
 
   |_______
@@ -183,9 +183,9 @@ module DisplayFunctions
   |
   |
 
-  "
+  '
     when number_of_incorrect_guesses == 2
-      puts "
+      puts '
 
 
   |_______
@@ -196,9 +196,9 @@ module DisplayFunctions
   |
   |
 
-  "
+  '
     when number_of_incorrect_guesses == 3
-      puts "
+      puts '
 
 
   |_______
@@ -209,9 +209,9 @@ module DisplayFunctions
   |
   |
 
-  "
+  '
     when number_of_incorrect_guesses == 4
-      puts "
+      puts '
 
 
   |_______
@@ -222,46 +222,46 @@ module DisplayFunctions
   |
   |
 
-  "
+  '
     when number_of_incorrect_guesses == 5
-      puts "
+      puts '
 
 
   |_______
   |      |
   |      O
-  |     /|\\
+  |     /|\
   |      |
   |
   |
 
-  "
+  '
     when number_of_incorrect_guesses == 6
-      puts "
+      puts '
 
 
   |_______
   |      |
   |      O
-  |     /|\\
+  |     /|\
   |      |
   |     /
   |
 
-  "
+  '
     when number_of_incorrect_guesses == 7
-      puts "
+      puts '
 
 
   |_______
   |      |
   |      O
-  |     /|\\
+  |     /|\
   |      |
-  |     / \\
+  |     / \
   |
 
-  "
+  '
     end
   end
 end
