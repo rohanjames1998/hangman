@@ -170,8 +170,8 @@ module DisplayFunctions
   end
 
   def display_hangman(number_of_incorrect_guesses)
-    case
-    when number_of_incorrect_guesses == 1
+    case number_of_incorrect_guesses
+    when 1
       puts '
 
 
@@ -184,33 +184,33 @@ module DisplayFunctions
   |
 
   '
-    when number_of_incorrect_guesses == 2
-      puts '
-
-
-  |_______
-  |      |
-  |      O
-  |
-  |
-  |
-  |
-
-  '
-    when number_of_incorrect_guesses == 3
+    when 2
       puts '
 
 
   |_______
   |      |
   |      O
+  |
+  |
+  |
+  |
+
+  '
+    when 3
+      puts '
+
+
+  |_______
+  |      |
+  |      O
   |      |
   |      |
   |
   |
 
   '
-    when number_of_incorrect_guesses == 4
+    when 4
       puts '
 
 
@@ -223,7 +223,7 @@ module DisplayFunctions
   |
 
   '
-    when number_of_incorrect_guesses == 5
+    when 5
       puts '
 
 
@@ -236,7 +236,7 @@ module DisplayFunctions
   |
 
   '
-    when number_of_incorrect_guesses == 6
+    when 6
       puts '
 
 
@@ -249,7 +249,7 @@ module DisplayFunctions
   |
 
   '
-    when number_of_incorrect_guesses == 7
+    when 7
       puts '
 
 
@@ -282,11 +282,11 @@ class Game
     @word_arr = []
 
     loop do
-      puts "Do you want to play a new game?[New]",
+      puts "\nDo you want to play a new game?[New]",
            "Or load a saved game?[Load]:"
       choice = gets.chomp.downcase.strip
-      case
-      when choice == 'load'
+      case choice
+      when 'load'
         saved_hash = load_saved_hash
         if saved_hash == 'back'
           next
@@ -296,7 +296,7 @@ class Game
         @word_arr = saved_hash['word_arr']
         break
         end
-      when choice == 'new'
+      when 'new'
         @word = get_secret_word
         @word_arr = word.split('')
         add_empty_dashes(correct_guesses, word_arr)
